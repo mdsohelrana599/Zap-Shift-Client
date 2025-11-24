@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
 import { Link } from "react-router";
+import SocialLogin from "../socialLogin/SocialLogin";
 
 const Login = () => {
   const {
@@ -22,9 +23,10 @@ const Login = () => {
   return (
     <div className=" flex items-center justify-center bg-base-200 py-10">
       <div className="w-full max-w-md bg-white rounded-2xl p-8">
-        <h2 className="text-3xl font-bold text-center mb-6 text-secondary">
+        <h2 className="text-3xl font-bold text-secondary">
           Welcome Back
         </h2>
+        <p className="mb-6 text-sm font-semibold">Login with ZapShift</p>
 
         <form onSubmit={handleSubmit(handlelogin)} className="space-y-4">
           {/* Email */}
@@ -90,6 +92,8 @@ const Login = () => {
           Don’t have an account?{" "}
           <Link to='/register' className="link text-secondary font-semibold">Register</Link>
         </p>
+         <p className="text-center text-gray-500 mt-3">Or</p>
+         <SocialLogin></SocialLogin>
       </div>
     </div>
   );
