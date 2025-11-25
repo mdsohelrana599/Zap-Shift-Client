@@ -29,7 +29,7 @@ const NavBar = () => {
         <NavLink to={''}>About Us</NavLink>
       </li>
       <li>
-        <NavLink to={''}>Pricing</NavLink>
+        <NavLink to='/sendParcel'>Send Parcel</NavLink>
       </li>
       <li>
         <NavLink to={''}>Blog</NavLink>
@@ -82,10 +82,10 @@ const NavBar = () => {
           {
             user ? <a onClick={handleLogOut} className="btn">Log Out</a> : <Link className='btn' to='/login'>Login</Link>
           }
-          <Link className='btn btn-primary text-black mx-4' to='/rider'>Be a rider</Link>
+          <Link className='btn btn-primary text-black hover:bg-lime-500 mx-4' to='/rider'>Be a rider</Link>
         </div>
       </div>
-    </div>
+    </div> 
   );
 };
 

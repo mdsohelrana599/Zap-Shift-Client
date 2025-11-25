@@ -1,7 +1,7 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import useAuth from "../../../Hooks/useAuth";
-import { Link } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../socialLogin/SocialLogin";
 import axios from "axios";
 
@@ -13,6 +13,8 @@ const Register = () => {
   } = useForm();
 
   const { registerUser, updateUserProfile } = useAuth();
+  const location = useLocation()
+  const navigate =  useNavigate()
 
   const handleRegister = (data) => {
     console.log("register", data.photo[0]);
@@ -36,6 +38,7 @@ const Register = () => {
           updateUserProfile(userProfile)
           .then(()=>{
             console.log('user profile uplodated done')
+            navigate(location.state || '/')
           })
           .catch((error) => console.log(error));
         });
@@ -144,7 +147,7 @@ const Register = () => {
         {/* Footer */}
         <p className=" mt-4 text-sm">
           Already have an account?
-          <Link to="/login" className="link text-secondary font-semibold">
+          <Link state={location.state} to="/login" className="link text-secondary font-semibold">
             Login
           </Link>
         </p>
@@ -156,168 +159,3 @@ const Register = () => {
 };
 
 export default Register;
-
-// import React, { useState } from "react";
-// import { useForm } from "react-hook-form";
-// import useAuth from "../../../Hooks/useAuth";
-// import { Link } from "react-router";
-// import SocialLogin from "../socialLogin/SocialLogin";
-
-// const Register = () => {
-//   const { registerUser } = useAuth();
-//   const [preview, setPreview] = useState(null);
-
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();
-
-//   const handleRegister = (data) => {
-//     console.log("register data:", data.photo[0]);
-
-//     registerUser(data.email, data.password)
-//       .then((result) => {
-//         console.log(result.user);
-//       })
-//       .catch((error) => {
-//         console.log(error);
-//       });
-//   };
-
-//   // Show preview when file selected
-//   const handlePhotoPreview = (event) => {
-//     const file = event.target.files[0];
-//     if (file) {
-//       setPreview(URL.createObjectURL(file));
-//     }
-//   };
-
-//   return (
-//     <div className="flex items-center justify-center bg-base-200 py-10">
-//       <div className="w-full max-w-md bg-white rounded-2xl p-8 shadow-lg">
-//         {/* Header */}
-//         <div className="mb-6 text-center">
-//           <h2 className="text-4xl font-bold text-secondary">
-//             Create an Account
-//           </h2>
-//           <p className="mt-2 text-sm font-semibold text-gray-600">
-//             Register with ZapShift
-//           </p>
-//         </div>
-
-//         <form onSubmit={handleSubmit(handleRegister)} className="space-y-4">
-//           {/* Photo Upload */}
-//           <div>
-//             <label className="label">
-//               <span className="label-text font-semibold">Photo</span>
-//             </label>
-
-//             <input
-//               type="file"
-//               accept="image/*"
-//               {...register("photo", { required: true })}
-//               onChange={handlePhotoPreview}
-//               className="file-input file-input-bordered w-full"
-//             />
-
-//             {errors.photo && (
-//               <p className="text-red-500 text-sm mt-1">Photo is required.</p>
-//             )}
-
-//             {/* Optional - Preview */}
-//             {preview && (
-//               <img
-//                 src={preview}
-//                 alt="preview"
-//                 className="w-20 h-20 rounded-md mt-3 border object-cover"
-//               />
-//             )}
-//           </div>
-
-//           {/* Name */}
-//           <div>
-//             <label className="label">
-//               <span className="label-text font-semibold">Name</span>
-//             </label>
-//             <input
-//               type="text"
-//               {...register("name", { required: true })}
-//               className="input input-bordered w-full"
-//               placeholder="Enter your Name"
-//             />
-//             {errors.name && (
-//               <p className="text-red-500 text-sm">Name is required.</p>
-//             )}
-//           </div>
-
-//           {/* Email */}
-//           <div>
-//             <label className="label">
-//               <span className="label-text font-semibold">Email</span>
-//             </label>
-//             <input
-//               type="email"
-//               {...register("email", { required: true })}
-//               className="input input-bordered w-full"
-//               placeholder="Enter your email"
-//             />
-//             {errors.email && (
-//               <p className="text-red-500 text-sm">Email is required.</p>
-//             )}
-//           </div>
-
-//           {/* Password */}
-//           <div>
-//             <label className="label">
-//               <span className="label-text font-semibold">Password</span>
-//             </label>
-
-//             <input
-//               type="password"
-//               {...register("password", {
-//                 required: true,
-//                 minLength: 6,
-//                 pattern:
-//                   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+={}[\]|\\:;"'<>,.?/~`]).{6,}$/,
-//               })}
-//               className="input input-bordered w-full"
-//               placeholder="Enter your password"
-//             />
-
-//             {errors.password?.type === "required" && (
-//               <p className="text-red-500 text-sm">Password is required.</p>
-//             )}
-//             {errors.password?.type === "minLength" && (
-//               <p className="text-red-500 text-sm">
-//                 Password must be at least 6 characters.
-//               </p>
-//             )}
-//             {errors.password?.type === "pattern" && (
-//               <p className="text-red-500 text-sm">
-//                 Must include upper, lower, number & special character.
-//               </p>
-//             )}
-//           </div>
-
-//           {/* Register Button */}
-//           <button className="btn btn-neutral w-full mt-2">Register</button>
-//         </form>
-
-//         {/* Footer */}
-//         <p className="mt-4 text-sm text-center">
-//           Already have an account?{" "}
-//           <Link to="/login" className="link text-secondary font-semibold">
-//             Login
-//           </Link>
-//         </p>
-
-//         <p className="text-center text-gray-500 mt-3">Or</p>
-
-//         <SocialLogin />
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Register;

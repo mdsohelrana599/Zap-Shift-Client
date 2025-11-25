@@ -27,20 +27,20 @@ const Footer = () => {
         <nav className="mb-12">
           <NavLink></NavLink>
           <ul className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-10 text-gray-400 text-sm sm:text-base">
-            <li><NavLink to="#" className="hover:text-white transition">Services</NavLink></li>
-          <li><NavLink to="/coverage" claclassNamess="hover:text-white transition">Coverage</NavLink></li>
-          <li><NavLink to="#" className="hover:text-white transition">About Us</NavLink></li>
-          <li><NavLink to="#" className="hover:text-white transition">Pricing</NavLink></li>
-          <li><NavLink to="#" className="hover:text-white transition">Blog</NavLink></li>
-          <li><NavLink to="#" className="hover:text-white transition">Contact</NavLink></li>
+            <li><NavLink to="/" className="hover:text-white transition hover:underline">Services</NavLink></li>
+          <li><NavLink to="/coverage" className="hover:text-white transition hover:underline">Coverage</NavLink></li>
+          <li><NavLink to="/" className="hover:text-white transition hover:underline">About Us</NavLink></li>
+          <li><NavLink to="/" className="hover:text-white transition hover:underline">Pricing</NavLink></li>
+          <li><NavLink to="/" className="hover:text-white transition hover:underline">Blog</NavLink></li>
+          <li><NavLink to="/" className="hover:text-white transition hover:underline">Contact</NavLink></li>
           </ul>
         </nav>
 
         {/* Social Icons */}
-        <div className="flex flex-wrap justify-center gap-4 sm:gap-5">
+        <div className="flex flex-wrap justify-center  gap-4 sm:gap-5">
           <a
-            href="#"
-            className="w-10 h-10 sm:w-12 sm:h-12 bg-[#0077b5] rounded-full flex items-center justify-center hover:scale-110 transition-transform"
+            href="/"
+            className="w-10 h-10 sm:w-12 sm:h-12 bg-[#0077b5] rounded-full flex items-center justify-center  hover:scale-110 transition-transform"
             aria-label="LinkedIn"
           >
             <Linkedin className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -55,7 +55,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="#"
+            href="/"
             className="w-10 h-10 sm:w-12 sm:h-12 bg-[#1877f2] rounded-full flex items-center justify-center hover:scale-110 transition-transform"
             aria-label="Facebook"
           >
@@ -64,7 +64,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="#"
+            href="/"
             className="w-10 h-10 sm:w-12 sm:h-12 bg-[#ff0000] rounded-full flex items-center justify-center hover:scale-110 transition-transform"
             aria-label="YouTube"
           >
