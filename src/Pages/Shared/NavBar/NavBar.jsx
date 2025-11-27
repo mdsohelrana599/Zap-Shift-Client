@@ -29,14 +29,25 @@ const NavBar = () => {
         <NavLink to={''}>About Us</NavLink>
       </li>
       <li>
-        <NavLink to='/sendParcel'>Send Parcel</NavLink>
+        <NavLink to={''}>Pricing</NavLink>
       </li>
+      
       <li>
         <NavLink to={''}>Blog</NavLink>
       </li>
       <li>
         <NavLink to={''}>Contact</NavLink>
       </li>
+      {
+        user && <>
+        <li>
+          <NavLink to='/sendParcel'>Send Parcel</NavLink>
+        </li>
+        <li>
+        <NavLink to='/dashboard/my-parcels'>My Parcels</NavLink>
+      </li>
+        </>
+      }
     </>
   );
   return (
