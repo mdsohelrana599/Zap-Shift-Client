@@ -2,12 +2,11 @@ import React from "react";
 import { Link, NavLink, Outlet } from "react-router";
 import Logo from "../Components/Logo/Logo";
 import { GrDeliver } from "react-icons/gr";
-
-
+import { FaRegCreditCard } from "react-icons/fa6";
 
 const DashboardLayout = () => {
   return (
-    <div className="drawer lg:drawer-open bg-white">
+    <div className="drawer lg:drawer-open bg-gray-100">
       <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content">
         {/* Navbar */}
@@ -33,7 +32,9 @@ const DashboardLayout = () => {
               <path d="M14 10l2 2l-2 2"></path>
             </svg>
           </label>
-          <div className="px-2"><Logo></Logo></div>
+          <div className="px-2">
+            <Logo></Logo>
+          </div>
         </nav>
         {/* Page content here */}
         <Outlet></Outlet>
@@ -50,7 +51,8 @@ const DashboardLayout = () => {
           <ul className="menu w-full grow">
             {/* List item */}
             <li>
-              <Link to='/'
+              <Link
+                to="/"
                 className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
                 data-tip="Homepage"
               >
@@ -72,14 +74,29 @@ const DashboardLayout = () => {
               </Link>
             </li>
             {/* our dashbord links */}
-             
-                    <li>
-                    <NavLink className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                data-tip="My Parcels"  to='/dashboard/my-parcels'>
-                    <GrDeliver></GrDeliver>
-                      <span className="is-drawer-close:hidden">My Parcels </span>
-                    </NavLink>
-                  </li>
+
+            <li>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="My Parcels"
+                to="/dashboard/my-parcels"
+              >
+                <GrDeliver></GrDeliver>
+                <span className="is-drawer-close:hidden">My Parcels </span>
+              </NavLink>
+            </li>
+
+            
+            <li>
+              <NavLink
+                className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
+                data-tip="Payment History"
+                to="/dashboard/payment-history"
+              >
+                <FaRegCreditCard></FaRegCreditCard>
+                <span className="is-drawer-close:hidden">Payment History</span>
+              </NavLink>
+            </li>
 
             {/* List item */}
             <li>

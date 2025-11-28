@@ -60,7 +60,11 @@ const MyParcels = () => {
   };
 
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto p-8 ">
+     <div className="bg-white rounded-2xl p-8">
+       <h2 className="text-3xl font-bold text-secondary mb-6 ">
+        Payment History
+      </h2>
       <table className="table table-zebra">
         {/* head */}
         <thead>
@@ -116,6 +120,7 @@ const MyParcels = () => {
           ))}
         </tbody>
       </table>
+     </div>
     </div>
   );
 };
