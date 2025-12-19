@@ -4,6 +4,7 @@ import useAuth from "../../../Hooks/useAuth";
 import { Link, useLocation, useNavigate } from "react-router";
 import SocialLogin from "../socialLogin/SocialLogin";
 import axios from "axios";
+import useAxiosSecure from "../../../Hooks/useAxiosSecure";
 
 const Register = () => {
   const {
@@ -15,29 +16,40 @@ const Register = () => {
   const { registerUser, updateUserProfile } = useAuth();
   const location = useLocation()
   const navigate =  useNavigate()
+  const axiosSecure = useAxiosSecure()
 
   const handleRegister = (data) => {
-    console.log("register", data.photo[0]);
     const profileImg = data.photo[0];
     registerUser(data.email, data.password)
-      .then((result) => {
-        console.log(result.user);
+      .then(() => {
         const formData = new FormData();
         formData.append("image", profileImg);
         const image_API_URl = `https://api.imgbb.com/1/upload?key=${
           import.meta.env.VITE_image_host
         }`;
         axios.post(image_API_URl, formData).then((res) => {
-          console.log("after image upload", res.data.data.url);
+          const photoURL = res.data.data.url;
+
+          //
+          const userInfo = {
+            email: data.email,
+            displayName: data.name,
+             photoURl: photoURL,
+          }
+          axiosSecure.post("/users", userInfo)
+          .then(res => {
+            if(res.data.insertedId){
+              console.log('user created in tha database,')
+            }
+          })
 
           // updata user profile
           const userProfile = {
             displayName: data.name,
-            photoURl: res.data.data.url,
+            photoURl: photoURL,
           };
           updateUserProfile(userProfile)
           .then(()=>{
-            console.log('user profile uplodated done')
             navigate(location.state || '/')
           })
           .catch((error) => console.log(error));

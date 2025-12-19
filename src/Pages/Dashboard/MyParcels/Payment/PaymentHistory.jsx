@@ -23,11 +23,11 @@ const PaymentHistory = () => {
         </h2>
 
         {/* ---------- Mobile Card View ---------- */}
-        <div className="space-y-4 md:hidden">
+        <div className="space-y-4 md:hidden ">
           {payments.map((payment, index) => (
             <div
               key={payment._id}
-              className="border border-gray-200 rounded-xl p-4 bg-gray-50"
+              className="border border-gray-200  rounded-xl p-4 bg-gray-50"
             >
               <div className="flex justify-between items-center mb-3">
                 <p className="font-semibold text-gray-700">

@@ -26,16 +26,21 @@ export const router = createBrowserRouter([
       },
       {
         path: "/rider",
-        element: 
+        element: (
           <PrivateRoute>
             <Rider></Rider>
-          </PrivateRoute>,
-        
+          </PrivateRoute>
+        ),
+        loader: () => fetch("/warehouses.json").then((res) => res.json()),
       },
       {
-        path: '/sendParcel',
-        element: <PrivateRoute><SendParcel></SendParcel></PrivateRoute>,
-         loader: () => fetch("/warehouses.json").then((res) => res.json()),
+        path: "/sendParcel",
+        element: (
+          <PrivateRoute>
+            <SendParcel></SendParcel>
+          </PrivateRoute>
+        ),
+        loader: () => fetch("/warehouses.json").then((res) => res.json()),
       },
       {
         path: "/coverage",
@@ -60,30 +65,33 @@ export const router = createBrowserRouter([
   },
 
   {
-    path:'dashboard',
-    element: <PrivateRoute><DashboardLayout></DashboardLayout></PrivateRoute>,
-    children:[
+    path: "dashboard",
+    element: (
+      <PrivateRoute>
+        <DashboardLayout></DashboardLayout>
+      </PrivateRoute>
+    ),
+    children: [
       {
-        path: 'my-parcels',
+        path: "my-parcels",
         Component: MyParcels,
       },
       {
-        path: 'payment/:parcelId',
+        path: "payment/:parcelId",
         Component: Payment,
-
       },
       {
-        path: 'payment-history',
+        path: "payment-history",
         Component: paymentHistory,
       },
       {
-        path: 'payment-success',
+        path: "payment-success",
         Component: PaymentSuccess,
       },
       {
-        path:'payment-cancelled',
+        path: "payment-cancelled",
         Component: PaymentCancelled,
-      }
-    ]
-  }
+      },
+    ],
+  },
 ]);
