@@ -1,5 +1,5 @@
 import React from "react";
-import riderImg from "../../assets/agent-pending.png"; // Update path if needed
+import riderImg from "../../assets/agent-pending.png";
 import { useForm } from "react-hook-form";
 import useAxiosSecure from "../../Hooks/useAxiosSecure";
 import useAuth from "../../Hooks/useAuth";
@@ -16,42 +16,35 @@ const Rider = () => {
 
   const axiosSecure = useAxiosSecure();
   const { user } = useAuth();
-  const serviceCenters = useLoaderData(); // assuming this is an array of { region, district, warehouse, _id }
+  const serviceCenters = useLoaderData();
 
-  // Extract unique regions
+  // Unique regions
   const regions = [...new Set(serviceCenters.map((c) => c.region))];
 
   // Watch selected region
   const selectedRegion = watch("region");
 
-  // Get districts for selected region
+  // Districts based on selected region
   const districts = selectedRegion
-    ? [
-        ...new Set(
-          serviceCenters
-            .filter((c) => c.region === selectedRegion)
-            .map((c) => c.district)
-        ),
-      ]
+    ? [...new Set(serviceCenters.filter((c) => c.region === selectedRegion).map((c) => c.district))]
     : [];
 
-  // Get warehouses for selected region
+  // Warehouses based on selected region
   const warehouses = selectedRegion
     ? serviceCenters.filter((c) => c.region === selectedRegion)
     : [];
 
   const onSubmit = (data) => {
-    // const applicationData = {
-    //   ...data,
-    //   email: user?.email,
-    //   name: data.name || user?.displayName,
-    //   status: "pending",
-    //   appliedAt: new Date(),
-    // };
-    console.log("data", data);
+    console.log("Submitted Data:", data);
 
     axiosSecure
-      .post("/riders", data)
+      .post("/riders", {
+        ...data,
+        email: user?.email,
+        name: data.name || user?.displayName,
+        status: "pending",
+        appliedAt: new Date(),
+      })
       .then((res) => {
         if (res.data.insertedId) {
           Swal.fire({
@@ -64,12 +57,12 @@ const Rider = () => {
         }
       })
       .catch((error) => {
+        console.error("Submission error:", error);
         Swal.fire({
           icon: "error",
-          title: "Failed",
-          text: "Something went wrong. Please try again.",
+          title: "Submission Failed",
+          text: "Please try again later.",
         });
-        console.log("error", error);
       });
   };
 
@@ -80,9 +73,8 @@ const Rider = () => {
           {/* Header */}
           <h2 className="text-4xl font-bold text-primary">Be a Rider</h2>
           <p className="mt-4 text-gray-600 max-w-2xl">
-            Enjoy fast, reliable parcel delivery with real-time tracking and
-            zero hassle. From personal packages to business shipments — we
-            deliver on time, every time.
+            Enjoy fast, reliable parcel delivery with real-time tracking and zero hassle. 
+            From personal packages to business shipments — we deliver on time, every time.
           </p>
 
           <div className="mt-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
@@ -95,26 +87,18 @@ const Rider = () => {
               {/* Name & Age */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
                   <input
                     {...register("name", { required: "Name is required" })}
                     defaultValue={user?.displayName || ""}
                     className="input input-bordered w-full"
                     placeholder="Your Name"
                   />
-                  {errors.name && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.name.message}
-                    </p>
-                  )}
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Age
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Your Age</label>
                   <input
                     type="number"
                     {...register("age", {
@@ -124,21 +108,16 @@ const Rider = () => {
                     className="input input-bordered w-full"
                     placeholder="Your age"
                   />
-                  {errors.age && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.age.message}
-                    </p>
-                  )}
+                  {errors.age && <p className="text-red-500 text-xs mt-1">{errors.age.message}</p>}
                 </div>
               </div>
 
-              {/* Email & District */}
+              {/* Email & Region - Side by Side */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Your Email
-                  </label>
-                  <input
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Your Email</label>
+                  <input 
+                  {...register("email", { required: "Email is required" })}
                     type="email"
                     defaultValue={user?.email || ""}
                     readOnly
@@ -147,123 +126,81 @@ const Rider = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Region
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Region</label>
                   <select
                     {...register("region", { required: "Region is required" })}
                     className="select select-bordered w-full"
                   >
                     <option value="">Select Region</option>
                     {regions.map((r) => (
-                      <option key={r} value={r}>
-                        {r}
-                      </option>
+                      <option key={r} value={r}>{r}</option>
                     ))}
                   </select>
-                  {errors.region && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.region.message}
-                    </p>
-                  )}
+                  {errors.region && <p className="text-red-500 text-xs mt-1">{errors.region.message}</p>}
                 </div>
               </div>
 
               {/* NID & Contact */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    NID No
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">NID No</label>
                   <input
                     type="text"
                     {...register("nid", {
                       required: "NID is required",
-                      pattern: {
-                        value: /^\d{10,17}$/,
-                        message: "Invalid NID number",
-                      },
+                      pattern: { value: /^\d{10,17}$/, message: "Invalid NID number" },
                     })}
                     className="input input-bordered w-full"
                     placeholder="NID"
                   />
-                  {errors.nid && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.nid.message}
-                    </p>
-                  )}
+                  {errors.nid && <p className="text-red-500 text-xs mt-1">{errors.nid.message}</p>}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Contact
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Contact</label>
                   <input
                     type="tel"
                     {...register("phone", {
                       required: "Phone is required",
-                      pattern: {
-                        value: /^01[3-9]\d{8}$/,
-                        message: "Invalid BD phone number",
-                      },
+                      pattern: { value: /^01[3-9]\d{8}$/, message: "Invalid Bangladeshi number" },
                     })}
                     className="input input-bordered w-full"
-                    placeholder="Contact"
+                    placeholder="01xxxxxxxxx"
                   />
-                  {errors.phone && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.phone.message}
-                    </p>
-                  )}
+                  {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
                 </div>
               </div>
 
-              {/* Region & Warehouse */}
-
+              {/* District */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Your District
-                </label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Your District</label>
                 <select
-                  {...register("district", {
-                    required: "District is required",
-                  })}
+                  {...register("district", { required: "District is required" })}
                   className="select select-bordered w-full"
                   disabled={!selectedRegion}
                 >
                   <option value="">
-                    {selectedRegion
-                      ? "Select your District"
-                      : "First select Region"}
+                    {selectedRegion ? "Select your District" : "First select Region"}
                   </option>
                   {districts.map((d) => (
-                    <option key={d} value={d}>
-                      {d}
-                    </option>
+                    <option key={d} value={d}>{d}</option>
                   ))}
                 </select>
-                {errors.district && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.district.message}
-                  </p>
-                )}
+                {errors.district && <p className="text-red-500 text-xs mt-1">{errors.district.message}</p>}
               </div>
 
+              {/* Warehouse */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Which wire-house you want to work?
+                  Which warehouse you want to work?
                 </label>
                 <select
-                  {...register("warehouse", {
-                    required: "Warehouse is required",
-                  })}
+                  {...register("warehouse", { required: "Warehouse is required" })}
                   className="select select-bordered w-full"
                   disabled={!selectedRegion}
                 >
                   <option value="">
-                    {selectedRegion
-                      ? "Select wire-house"
-                      : "First select Region"}
+                    {selectedRegion ? "Select warehouse" : "First select Region"}
                   </option>
                   {warehouses.map((w) => (
                     <option key={w._id} value={w.warehouse}>
@@ -271,23 +208,20 @@ const Rider = () => {
                     </option>
                   ))}
                 </select>
-                {errors.warehouse && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.warehouse.message}
-                  </p>
-                )}
+                {errors.warehouse && <p className="text-red-500 text-xs mt-1">{errors.warehouse.message}</p>}
               </div>
 
               {/* Submit Button */}
-              <input
+              <button
                 type="submit"
-                className="btn bg-primary w-full hover:bg-lime-500 text-black hover:text-white"
-                value="Submit Application"
-              />
+                className="btn bg-lime-500 hover:bg-lime-600 text-black font-bold w-full py-4 text-lg"
+              >
+                Submit Application
+              </button>
             </form>
 
             {/* Rider Image */}
-            <div className=" lg:flex mx-auto justify-center items-center">
+            <div className="hidden lg:flex justify-center items-center">
               <img
                 src={riderImg}
                 alt="Delivery Rider"
